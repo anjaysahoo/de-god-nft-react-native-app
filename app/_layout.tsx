@@ -30,6 +30,13 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+            name="modal"
+            options={{
+              // Set the presentation mode to modal for our modal route.
+              presentation: 'modal',
+            }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

@@ -1,51 +1,54 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {Text, Image, StyleSheet, FlatList, View, TouchableOpacity} from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import {useEffect, useState} from "react";
+import {fetchNFTs} from "@/api/covalent";
+import {Link} from "expo-router";
+import {NftModel} from "@/models/nft.model";
 
 export default function HomeScreen() {
+    const [nfts, setNFTs] = useState<NftModel[]>([]);
+
+
+    useEffect(() => {
+        fetchNFTs().then(setNFTs);
+    }, []);
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity>
+            <Link href={{ pathname: '/modal', params: item }}>
+                <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
+                <Text>{item.name}</Text>
+                <Text>{item.current_owner.slice(0,5) + "..." + item.current_owner.slice(-5)}</Text>
+            </Link>
+        </TouchableOpacity>
+    );
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+            source={{ uri: "https://i.seadn.io/gcs/files/0f98e562496514deec72096435a77eef.jpg?auto=format&dpr=1&w=3840" }}
+            style={styles.reactLogo}
         />
       }>
+        <ThemedView style={styles.titleContainer}>
+            <ThemedText type="title">All NFTs</ThemedText>
+        </ThemedView>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+          <View>
+              <FlatList
+                  data={nfts}
+                  keyExtractor={(item) => item.token_id.toString()}
+                  renderItem={renderItem}
+              />
+          </View>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+
+
     </ParallaxScrollView>
   );
 }
@@ -61,8 +64,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: 250,
+    width: 420,
     bottom: 0,
     left: 0,
     position: 'absolute',
