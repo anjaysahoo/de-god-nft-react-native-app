@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {NftModel} from "@/models/nft.model";
 
-export default function Modal() {
+export default function Details() {
     const nftData = useLocalSearchParams();
 
 

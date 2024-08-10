@@ -1,12 +1,12 @@
-import {Text, Image, StyleSheet, FlatList, View, TouchableOpacity} from 'react-native';
+import { Image, StyleSheet, View} from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import {useEffect, useState} from "react";
 import {fetchNFTs} from "@/api/covalent";
-import {Link} from "expo-router";
 import {NftModel} from "@/models/nft.model";
+import RenderItem from "@/components/RenderItem";
 
 export default function HomeScreen() {
     const [nfts, setNFTs] = useState<NftModel[]>([]);
@@ -15,16 +15,6 @@ export default function HomeScreen() {
     useEffect(() => {
         fetchNFTs().then(setNFTs);
     }, []);
-
-    const renderItem = ({ item }) => (
-        <TouchableOpacity>
-            <Link href={{ pathname: '/modal', params: item }}>
-                <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
-                <Text>{item.name}</Text>
-                <Text>{item.current_owner.slice(0,5) + "..." + item.current_owner.slice(-5)}</Text>
-            </Link>
-        </TouchableOpacity>
-    );
 
   return (
     <ParallaxScrollView
@@ -40,11 +30,12 @@ export default function HomeScreen() {
         </ThemedView>
       <ThemedView style={styles.titleContainer}>
           <View>
-              <FlatList
-                  data={nfts}
-                  keyExtractor={(item) => item.token_id.toString()}
-                  renderItem={renderItem}
-              />
+              {nfts.map((item) => (
+                  <RenderItem
+                      key={item.token_id}
+                      item={item}
+                  />
+              ))}
           </View>
       </ThemedView>
 
