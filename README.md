@@ -2,14 +2,16 @@
 
 ![degod-nft-demo.gif](degod-nft-demo.gif)
 
-## Features
+### 📦Download APK from here to use: https://expo.dev/artifacts/eas/c7eKn7igKsy3VW6ApWdmcZ.apk
+
+## ⭐Features
 1. See all Degods NFTs through infinite scroll
 2. Bookmark your favorite Degods NFTs
 3. View all your bookmarked Degods NFTs
 4. Unbookmark your favorite Degods NFTs
 
 
-## Get started
+## 🔨To run locally on your system
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 1. Install dependencies
