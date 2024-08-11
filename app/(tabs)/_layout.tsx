@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           title: 'Bookmarked NFTs',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'bookmarks' : 'bookmarks-outline'} color={color} />
           ),
         }}
       />

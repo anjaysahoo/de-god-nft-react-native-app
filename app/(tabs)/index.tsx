@@ -21,9 +21,7 @@ export default function HomeScreen() {
         if (loading || isEndReached) return;
 
         setLoading(true);
-        console.log("load newNFTs : ")
         const newNFTs = await fetchNFTs(page);
-        console.log("newNFTs : ", newNFTs)
 
         if (newNFTs.length > 0) {
             setNFTs(prevNFTs => [...prevNFTs, ...newNFTs]);
@@ -38,7 +36,6 @@ export default function HomeScreen() {
     const handleScroll = async (event: { nativeEvent: { layoutMeasurement: any; contentOffset: any; contentSize: any; }; }) => {
         const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
         if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 50) {
-            console.log("End reached")
             await loadNFTs()
         }
     };
@@ -50,22 +47,20 @@ export default function HomeScreen() {
             headerImage={
                 <Image
                     source={{ uri: "https://i.seadn.io/gcs/files/0f98e562496514deec72096435a77eef.jpg?auto=format&dpr=1&w=3840" }}
-                    style={styles.reactLogo}
+                    style={styles.deGodLogo}
                 />
             }>
             <View>
                 <ThemedView style={styles.titleContainer}>
                     <ThemedText type="title">All NFTs</ThemedText>
                 </ThemedView>
-                <ThemedView style={styles.titleContainer}>
-                    <View>
+                <ThemedView style={styles.cardContainer}>
                         {nfts.map((item) => (
                             <RenderItem
                                 key={item.token_id}
                                 item={item}
                             />
                         ))}
-                    </View>
                 </ThemedView>
                 {loading && <ActivityIndicator style={styles.loadingIndicator} />}
             </View>
@@ -74,17 +69,21 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    reactLogo: {
+    deGodLogo: {
         height: 250,
         width: 420,
         bottom: 0,
         left: 0,
         position: 'absolute',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    cardContainer: {
+        flex: 1,
+        gap: 15,
     },
     loadingIndicator: {
         marginVertical: 16,

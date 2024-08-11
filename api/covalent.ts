@@ -25,11 +25,9 @@ export const fetchNFTs = async (page = 0, pageSize = 10): Promise<NftModel[]> =>
             token_id: response.data.data.items[i]?.nft_data?.token_id,
             current_owner: response.data.data.items[i]?.nft_data?.current_owner,
             name: response.data.data.items[i]?.nft_data?.external_data?.name,
-            image: response.data.data.items[i]?.nft_data?.external_data?.image,
+            image: response.data.data.items[i]?.nft_data?.external_data?.image_1024,
         });
     }
-
-    console.log("res : ",res);
 
     return res;
 };

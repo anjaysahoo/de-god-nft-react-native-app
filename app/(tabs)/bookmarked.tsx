@@ -1,4 +1,4 @@
-import {StyleSheet, Image, View} from 'react-native';
+import {StyleSheet, Image} from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -28,42 +28,42 @@ export default function Bookmarked() {
             headerImage={
                 <Image
                     source={{ uri: "https://i.seadn.io/gcs/files/0f98e562496514deec72096435a77eef.jpg?auto=format&dpr=1&w=3840" }}
-                    style={styles.reactLogo}
+                    style={styles.deGodLogo}
                 />
             }>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Bookmarked NFTs</ThemedText>
             </ThemedView>
-            <ThemedView style={styles.titleContainer}>
-                <View>
+            <ThemedView style={styles.cardContainer}>
                     {bookmarkedNFTs.map((item) => (
                         <RenderItem
                             key={item.token_id}
                             item={item}
                         />
                     ))}
-                </View>
             </ThemedView>
         </ParallaxScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    headerImage: {
-        color: '#808080',
-        bottom: -90,
-        left: -35,
-        position: 'absolute',
-    },
-    titleContainer: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-    reactLogo: {
+    deGodLogo: {
         height: 250,
         width: 420,
         bottom: 0,
         left: 0,
         position: 'absolute',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    cardContainer: {
+        flex: 1,
+        gap: 15,
+    },
+    loadingIndicator: {
+        marginVertical: 16,
     },
 });

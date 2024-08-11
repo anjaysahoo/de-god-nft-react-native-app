@@ -1,24 +1,19 @@
-import {View, Platform, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, StyleSheet, Image } from 'react-native';
 import {Link, router, useLocalSearchParams} from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {NftModel} from "@/models/nft.model";
+import Button from "@/components/Button";
 
 export default function Details() {
     const nftData = useLocalSearchParams();
 
-
     const [isBookmarked, setIsBookmarked] = useState(false);
 
     useEffect(() => {
-        console.log("use effect called")
         AsyncStorage.getItem('bookmarkedNFTs').then((data) => {
-            console.log("current data : ", data);
             if (data) {
                 const bookmarkedNFTs = JSON.parse(data);
-                console.log("bookmarkedNFTs data : ", bookmarkedNFTs);
-                console.log("nftData : ", nftData);
                 setIsBookmarked(bookmarkedNFTs.some((element: NftModel) => element.token_id.toString() === nftData.token_id.toString()));
             }
         });
@@ -36,28 +31,63 @@ export default function Details() {
 
         await AsyncStorage.setItem('bookmarkedNFTs', JSON.stringify(bookmarkedNFTs));
         setIsBookmarked(!isBookmarked);
-        const updatedData = await AsyncStorage.getItem('bookmarkedNFTs');
-        console.log(  "updatedData : ", updatedData)
     };
 
     // If the page was reloaded or navigated to directly, then the modal should be presented as
     // a full screen page. You may need to change the UI to account for this.
     const isPresented = router.canGoBack();
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
             {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
             {!isPresented && <Link href="../">Dismiss</Link>}
-            {/* Native modals have dark backgrounds on iOS. Set the status bar to light content and add a fallback for other platforms with auto. */}
-            <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-            <Text style={styles.textColor}>{nftData.name}</Text>
-            <Button title={isBookmarked ? 'Unbookmark' : 'Bookmark'} onPress={toggleBookmark} />
+            <View style={styles.image}>
+                <Image source={{ uri: nftData.image }} style={styles.image} />
+            </View>
+            <View style={styles.textContainer}>
+                <Text style={styles.title}>{nftData.name}</Text>
+                <Text style={styles.owner}>{nftData.current_owner}</Text>
+            </View>
+            <Button
+                title={isBookmarked ? 'Unbookmark' : 'Bookmark'}
+                onPress={toggleBookmark}
+            />
         </View>
     );
 }
 
 
 const styles = StyleSheet.create({
-    textColor: {
-        color: 'white',
-    }
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 10,
+        padding: 10,
+    },
+    image: {
+        width: 350,
+        height: 350,
+        borderRadius: 15,
+        elevation: 25,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+    },
+    textContainer: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#f8c7a3',
+    },
+    title: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    owner: {
+        color: '#888',
+        marginTop: 4,
+    },
 });
